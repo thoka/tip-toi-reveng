@@ -1,0 +1,31 @@
+__tttool()
+{
+    local cur prev opts yaml commands
+
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    opts="--help --transcript --code-dim --dpi --pixel-size"
+    yaml="assemble oid-table oid-codes"
+
+    gme="info export scripts script games lint segments segment explain holes rewrite media binaries play"
+
+    commands="$yaml $gme"
+
+    if [[ ${prev} =~ ${yaml/ /|} ]]; then
+        f=( $(ls | grep "${cur}.*\.yaml" | grep -v ".codes.yaml") )
+        COMPREPLY=( $(compgen -W "$f" -- ${cur}) )
+        return 0
+    elif [[ ${prev} =~ ${gme/ /|} ]]; then
+        COMPREPLY=( $(compgen -G "*.gme" -- ${cur}) )
+        return 0
+    fi
+
+    if [[ ${cur} == * ]] ; then
+        COMPREPLY=( $(compgen -W "${opts} ${commands}" -- ${cur}) )
+        return 0
+    fi
+}
+
+complete -F __tttool tttool
