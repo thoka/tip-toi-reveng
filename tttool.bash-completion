@@ -1,6 +1,6 @@
 __tttool()
 {
-    local cur prev opts yaml commands f
+    local cur prev opts gme yaml commands f
 
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
@@ -12,11 +12,11 @@ __tttool()
 
     commands="$yaml $gme"
 
-    if [[ ${prev} =~ ${yaml/ /|} ]]; then
+    if [[ ${prev} =~ ${yaml// /|} ]]; then
         #f=( $(ls | grep ".yaml" | grep -v ".codes.yaml") )
         COMPREPLY=( $(compgen -f -X '!*.yaml' -- ${cur}) )
         return 0
-    elif [[ ${prev} =~ ${gme/ /|} ]]; then
+    elif [[ ${prev} =~ ${gme// /|} ]]; then
         #f=( $(ls | grep .gme) )
         COMPREPLY=( $(compgen -f -X '!*.gme' -- ${cur}) )
         return 0
